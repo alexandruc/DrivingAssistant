@@ -23,9 +23,9 @@ public class SoundControl {
 	public void setRingVolumeMax(){
 		//TODO: throw some exceptions if am is null
 		if(m_am != null){
-			m_iOldVolumeValue = m_am.getStreamVolume(AudioManager.STREAM_RING);
-			int maxCallValue = m_am.getStreamMaxVolume(AudioManager.STREAM_RING);
-			m_am.setStreamVolume(AudioManager.STREAM_RING, maxCallValue, 0);
+			m_iOldVolumeValue = m_am.getStreamVolume(AudioManager.STREAM_SYSTEM);
+			int maxCallValue = m_am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+			m_am.setStreamVolume(AudioManager.STREAM_SYSTEM, maxCallValue, 0);
 		}
 	}
 	

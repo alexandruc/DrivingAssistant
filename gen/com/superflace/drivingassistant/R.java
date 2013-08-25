@@ -24,7 +24,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080004;
+        public static final int action_settings=0x7f080005;
+        public static final int button_save=0x7f080004;
         public static final int checkbox_auto_activate=0x7f080000;
         public static final int checkbox_send_sms=0x7f080003;
         public static final int checkbox_set_volume_max=0x7f080002;
@@ -38,11 +39,11 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
-        public static final int activate=0x7f050002;
         public static final int app_name=0x7f050000;
         public static final int auto_activate=0x7f050003;
-        public static final int cancel=0x7f050007;
+        public static final int exit=0x7f050007;
         public static final int maximize_volume=0x7f050005;
+        public static final int save=0x7f050002;
         public static final int send_sms=0x7f050006;
         public static final int speak_caller_id=0x7f050004;
     }

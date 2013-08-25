@@ -26,33 +26,39 @@ public class CallListener extends PhoneStateListener {
 	
 	@Override
 	public void onCallStateChanged(int state, String incomingNumber) {
+		Log.i(CALL_LISTENER, "ENTER: state: " + String.valueOf(state) + ", incomingNr: " + incomingNumber);
+		
+		super.onCallStateChanged(state, incomingNumber);
+		
 		switch(state){
 		case TelephonyManager.CALL_STATE_RINGING: {
 			Log.i(CALL_LISTENER, "incomingNr: " + incomingNumber);
 			//TODO: check if another call is in progress
 			if(m_tts != null){
-				
 				//TODO: put this in a thread to speak until the ringing stops
 				String callerName = PhoneUtils.getDisplayNameForNumber(m_context, incomingNumber);
 				if(callerName != null){
-					m_tts.speak(callerName + " is calling");
+					m_tts.speak(callerName + " is calling . .");
 				}
 				else{
-					m_tts.speak(incomingNumber + " is calling");
+					m_tts.speak(incomingNumber + " is calling . .");
 				}
 			}
 
 			break;
 		}
 		case TelephonyManager.CALL_STATE_IDLE: {
-			//TODO: stop tts from speaking
+			if(m_tts != null){
+				m_tts.stop();
+			}
 			break;
 		}
 		default: {
+			if(m_tts != null){
+				m_tts.stop();
+			}
 			break;
 		}
 		}
-
-		super.onCallStateChanged(state, incomingNumber);
 	}
 }

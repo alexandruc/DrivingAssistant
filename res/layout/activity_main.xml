@@ -41,14 +41,16 @@
             android:layout_height="wrap_content"
             android:layout_weight=".50"
             android:onClick="cancelAction"
-            android:text="@string/cancel" />
+            android:text="@string/exit" />
 
         <Button
+            android:id="@+id/button_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".50"
-            android:onClick="activateAssistant"
-            android:text="@string/activate" />
+            android:onClick="saveChanges"
+            android:text="@string/save" />
+
     </LinearLayout>
 
 </LinearLayout>
