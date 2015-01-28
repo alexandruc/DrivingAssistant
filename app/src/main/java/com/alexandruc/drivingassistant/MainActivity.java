@@ -7,7 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.bl.ToggleButtonListAdapter;
 
@@ -38,6 +41,23 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_onoff);
+        Switch sw = (Switch) searchItem.getActionView().findViewById(R.id.switchForActionBar);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    Toast.makeText(getBaseContext(), "ON", Toast.LENGTH_LONG).show(); //TODO remove me
+                }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "OFF", Toast.LENGTH_LONG).show(); //TODO remove me
+                }
+            }
+        });
+
         return true;
     }
 }
