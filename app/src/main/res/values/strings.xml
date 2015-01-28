@@ -2,5 +2,23 @@
 <resources>
 
     <string name="app_name">Drive Assistant</string>
+    <string name="save_text">Save</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="caller_id">Speak caller ID</string>
+    <string name="busy_message">Busy message</string>
+    <string name="whitelist">Whitelist</string>
+    <string name="blacklist">Blacklist</string>
+
+    <string-array name="Strings">
+        <item>@string/caller_id</item>
+        <item>@string/busy_message</item>
+        <item>@string/whitelist</item>
+        <item>@string/blacklist</item>
+    </string-array>
+
+    <string name="title_activity_edit_message">Edit Message</string>
+    <string name="default_busy_message">I\'m driving. I\'ll call you later.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
