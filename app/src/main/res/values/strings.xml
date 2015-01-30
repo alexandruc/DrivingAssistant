@@ -18,7 +18,7 @@
 
     <string name="title_activity_edit_message">Edit Message</string>
     <string name="default_busy_message">I\'m driving. I\'ll call you later.</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
+    <string name="service_name">drive.assistant.service</string>
 
 </resources>

@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.bl.ToggleButtonListAdapter;
+import com.alexandruc.drivingassistant.core.service.LocalServiceClient;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -50,10 +51,12 @@ public class MainActivity extends ActionBarActivity {
                 if(isChecked)
                 {
                     Toast.makeText(getBaseContext(), "ON", Toast.LENGTH_LONG).show(); //TODO remove me
+                    //mClient.doBindService();
                 }
                 else
                 {
                     Toast.makeText(getBaseContext(), "OFF", Toast.LENGTH_LONG).show(); //TODO remove me
+                    //mClient.doUnbindService();
                 }
             }
         });
