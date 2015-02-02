@@ -24,7 +24,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.alexandruc.drivingassistant.MainActivity" />
         </activity>
-        <service android:enabled="false" android:name=".core.service.LocalService" />
+        <service android:enabled="true" android:name=".core.service.LocalService" />
     </application>
 
 </manifest>

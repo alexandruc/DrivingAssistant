@@ -18,6 +18,8 @@ import com.alexandruc.drivingassistant.core.service.LocalServiceClient;
 
 public class MainActivity extends ActionBarActivity {
 
+    private LocalServiceClient mClient = new LocalServiceClient(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +53,12 @@ public class MainActivity extends ActionBarActivity {
                 if(isChecked)
                 {
                     Toast.makeText(getBaseContext(), "ON", Toast.LENGTH_LONG).show(); //TODO remove me
-                    //mClient.doBindService();
+                    mClient.doBindService();
                 }
                 else
                 {
                     Toast.makeText(getBaseContext(), "OFF", Toast.LENGTH_LONG).show(); //TODO remove me
-                    //mClient.doUnbindService();
+                    mClient.doUnbindService();
                 }
             }
         });

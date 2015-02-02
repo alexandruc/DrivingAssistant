@@ -66,6 +66,8 @@ public class LocalService extends Service {
                 //.setLargeIcon(R.drawable.drive_assistant_white)
                 .build();
 
+        notification.flags |= Notification.FLAG_ONGOING_EVENT;
+
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
