@@ -14,11 +14,13 @@ import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.bl.ToggleButtonListAdapter;
 import com.alexandruc.drivingassistant.core.service.LocalServiceClient;
+import com.alexandruc.drivingassistant.core.tts.TTSController;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private LocalServiceClient mClient = new LocalServiceClient(this);
+    private TTSController mTTSController = new TTSController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,31 @@ public class MainActivity extends ActionBarActivity {
                 if (item.equals(getString(R.string.busy_message))) {
                     Intent intent = new Intent(getBaseContext(), EditMessageActivity.class);
                     startActivity(intent);
+                } else if(item.equals(getString(R.string.caller_id)))
+                {
+                    if(mTTSController.isInitialized()){
+                        mTTSController.speak(getString(R.string.caller_id));
+                    }else {
+                        mTTSController.checkTTSDataAvailabilityRequest();
+                    }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTTSController.shutdown();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(!mTTSController.checkTTSDataAvailabilityRequestResult(requestCode, resultCode))
+        {
+            mTTSController.requestTTSDataInstallation();
+        }
     }
 
     @Override
