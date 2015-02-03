@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.telephony.PhoneStateListener;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.alexandruc.drivingassistant.R;
 import com.alexandruc.drivingassistant.Utils.DataUtils;
 import com.alexandruc.drivingassistant.core.tts.TTSController;
+
+import java.util.ArrayList;
 
 public class CallListener extends PhoneStateListener {
 
@@ -43,6 +46,22 @@ public class CallListener extends PhoneStateListener {
             case TelephonyManager.CALL_STATE_IDLE:{
                 Log.d("CallListener", "Call state idle");
                 mTTS.stop();
+                //send busy message
+                //TODO: should put this in a separate class, but it's too simple
+                SharedPreferences prefs = mContext.getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
+                if (prefs.getBoolean(mContext.getString(R.string.busy_message), false)) {
+                    SmsManager smsManager = SmsManager.getDefault();
+
+                    String message = prefs.getString(DataUtils.busyMessageKey, mContext.getString(R.string.default_busy_message));
+
+                    ArrayList<String> messages = smsManager.divideMessage(message);
+                    try {
+                        smsManager.sendMultipartTextMessage(incomingNumber, null, messages, null, null);
+                    } catch (IllegalArgumentException e) {
+                        Log.d("CallListener", "Exception when sending message");
+                    }
+                }
+                //NOTE: should check if they were sent ok?
                 break;
             }
             default:

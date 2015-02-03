@@ -26,6 +26,8 @@
         </activity>
         <service android:enabled="true" android:name=".core.service.LocalService" />
     </application>
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
 </manifest>
