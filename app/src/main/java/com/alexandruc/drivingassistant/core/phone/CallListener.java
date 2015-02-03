@@ -18,10 +18,12 @@ public class CallListener extends PhoneStateListener {
 
     private TTSController mTTS;
     private Activity mContext;
+    private PhoneUtils mPUtils;
 
     public CallListener(Activity context, TTSController tts){
         mContext = context;
         mTTS = tts;
+        mPUtils = new PhoneUtils(context);
     }
 
     @Override
@@ -39,7 +41,13 @@ public class CallListener extends PhoneStateListener {
                 //TODO: start fetching the caller id to speak
                 SharedPreferences prefs = mContext.getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
                 if(prefs.getBoolean(mContext.getString(R.string.caller_id), false)) {
-                    mTTS.speak(incomingNumber);
+                    String callerName = mPUtils.getContactDisplayNameByNumber(incomingNumber);
+                    if(!callerName.isEmpty()){
+                        mTTS.speak(callerName);
+                    }
+                    else {
+                        mTTS.speak(incomingNumber);
+                    }
                 }
                 break;
             }
