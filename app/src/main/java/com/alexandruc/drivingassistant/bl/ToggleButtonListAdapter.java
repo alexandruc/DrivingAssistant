@@ -36,8 +36,6 @@ public class ToggleButtonListAdapter extends ArrayAdapter<String> {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), values[position] + " selected", Toast.LENGTH_LONG).show(); //TODO remove me
-
                 ToggleButton tgl = (ToggleButton) v;
                 SharedPreferences prefs = getContext().getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -53,5 +51,4 @@ public class ToggleButtonListAdapter extends ArrayAdapter<String> {
 
         return rowView;
     }
-
 }

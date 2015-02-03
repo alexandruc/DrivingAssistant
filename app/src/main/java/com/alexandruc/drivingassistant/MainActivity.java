@@ -80,14 +80,10 @@ public class MainActivity extends ActionBarActivity {
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    Toast.makeText(getBaseContext(), "ON", Toast.LENGTH_LONG).show(); //TODO remove me
+                if(isChecked){
                     mClient.doBindService();
                 }
-                else
-                {
-                    Toast.makeText(getBaseContext(), "OFF", Toast.LENGTH_LONG).show(); //TODO remove me
+                else{
                     mClient.doUnbindService();
                 }
             }
