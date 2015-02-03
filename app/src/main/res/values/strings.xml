@@ -20,5 +20,6 @@
     <string name="default_busy_message">I\'m driving. I\'ll call you later.</string>
 
     <string name="service_name">drive.assistant.service</string>
+    <string name="caller_id_suffix">is calling</string>
 
 </resources>
