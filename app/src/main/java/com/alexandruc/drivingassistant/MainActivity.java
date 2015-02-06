@@ -2,7 +2,6 @@ package com.alexandruc.drivingassistant;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.Telephony;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
@@ -18,13 +17,11 @@ import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.bl.ToggleButtonListAdapter;
 import com.alexandruc.drivingassistant.core.phone.CallListener;
-import com.alexandruc.drivingassistant.core.service.LocalServiceClient;
+import com.alexandruc.drivingassistant.core.service.LocalService;
 import com.alexandruc.drivingassistant.core.tts.TTSController;
 
 
 public class MainActivity extends ActionBarActivity {
-
-    private LocalServiceClient mClient = new LocalServiceClient(this);
     private TTSController mTTSController = new TTSController(this);
     private CallListener mCallListener = new CallListener(this,mTTSController);
 
@@ -77,14 +74,20 @@ public class MainActivity extends ActionBarActivity {
 
         MenuItem searchItem = menu.findItem(R.id.action_onoff);
         Switch sw = (Switch) searchItem.getActionView().findViewById(R.id.switchForActionBar);
+        if(LocalService.isServiceRunning()){
+            sw.setChecked(true);
+        }
+
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    mClient.doBindService();
+                    Intent intent = new Intent(getBaseContext(), LocalService.class);
+                    startService(intent);
                 }
                 else{
-                    mClient.doUnbindService();
+                    Intent intent = new Intent(getBaseContext(), LocalService.class);
+                    stopService(intent);
                 }
             }
         });
