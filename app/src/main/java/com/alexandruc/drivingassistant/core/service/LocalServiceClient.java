@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.R;
@@ -25,14 +26,12 @@ public class LocalServiceClient extends Activity {
 
             mBoundService = ((LocalService.LocalBinder)service).getService();
 
-            Toast.makeText(context, R.string.service_name + " connected",
-                    Toast.LENGTH_SHORT).show();
+            Log.i("LocalServiceClient", "Client connected");
         }
 
         public void onServiceDisconnected(ComponentName className) {
             mBoundService = null;
-            Toast.makeText(context, R.string.service_name + " disconnected",
-                    Toast.LENGTH_SHORT).show();
+            Log.i("LocalServiceClient", "Client disconnected");
         }
     };
 

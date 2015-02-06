@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alexandruc.drivingassistant.MainActivity;
 import com.alexandruc.drivingassistant.R;
@@ -28,6 +27,7 @@ public class LocalService extends Service {
     public void onCreate() {
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
+        Log.i("LocalService", "Service started");
         showNotification();
     }
 
@@ -43,7 +43,7 @@ public class LocalService extends Service {
         mNM.cancel(NOTIFICATION);
 
         // Tell the user we stopped.
-        Toast.makeText(this, R.string.service_name + " stopped", Toast.LENGTH_SHORT).show();
+        Log.i("LocalService", "Service stopped");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class LocalService extends Service {
                 //.setLargeIcon(R.drawable.drive_assistant_white)
                 .build();
 
-        notification.flags |= Notification.FLAG_ONGOING_EVENT; //TODO: FLAG_FOREGROUND_SERVICE
+        notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR; //TODO: FLAG_FOREGROUND_SERVICE
 
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
