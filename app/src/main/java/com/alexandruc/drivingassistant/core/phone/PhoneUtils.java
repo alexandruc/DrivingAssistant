@@ -9,10 +9,12 @@ import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-public class PhoneUtils {
-    private Activity mContext;
+import com.alexandruc.drivingassistant.core.service.LocalService;
 
-    public PhoneUtils(Activity context){
+public class PhoneUtils {
+    private LocalService mContext;
+
+    public PhoneUtils(LocalService context){
         mContext = context;
     }
 

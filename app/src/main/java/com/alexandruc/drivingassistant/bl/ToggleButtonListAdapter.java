@@ -2,6 +2,7 @@ package com.alexandruc.drivingassistant.bl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ToggleButton;
 
 import com.alexandruc.drivingassistant.R;
 import com.alexandruc.drivingassistant.Utils.DataUtils;
+import com.alexandruc.drivingassistant.core.service.LocalService;
 
 public class ToggleButtonListAdapter extends ArrayAdapter<String> {
     private final Context context;
@@ -41,6 +43,10 @@ public class ToggleButtonListAdapter extends ArrayAdapter<String> {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(values[position], tgl.isChecked());
                 editor.apply();
+
+                if(LocalService.isServiceRunning()){
+                    Toast.makeText(getContext(), getContext().getString(R.string.toast_option_changed), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

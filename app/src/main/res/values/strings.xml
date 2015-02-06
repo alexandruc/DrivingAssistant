@@ -21,5 +21,6 @@
 
     <string name="service_name">drive.assistant.service</string>
     <string name="caller_id_suffix">is calling</string>
+    <string name="toast_option_changed">You must restart the service for the changes to apply</string>
 
 </resources>

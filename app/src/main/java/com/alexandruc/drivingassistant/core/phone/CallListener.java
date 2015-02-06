@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.alexandruc.drivingassistant.R;
 import com.alexandruc.drivingassistant.Utils.DataUtils;
+import com.alexandruc.drivingassistant.bl.DriveAssistantController;
+import com.alexandruc.drivingassistant.core.service.LocalService;
 import com.alexandruc.drivingassistant.core.tts.TTSController;
 
 import java.util.ArrayList;
@@ -17,10 +19,10 @@ import java.util.ArrayList;
 public class CallListener extends PhoneStateListener {
 
     private TTSController mTTS;
-    private Activity mContext;
+    private LocalService mContext;
     private PhoneUtils mPUtils;
 
-    public CallListener(Activity context, TTSController tts){
+    public CallListener(LocalService context, TTSController tts){
         mContext = context;
         mTTS = tts;
         mPUtils = new PhoneUtils(context);
@@ -38,9 +40,7 @@ public class CallListener extends PhoneStateListener {
             }
             case TelephonyManager.CALL_STATE_RINGING:{
                 Log.d("CallListener", "Call state ringing");
-                //TODO: start fetching the caller id to speak
-                SharedPreferences prefs = mContext.getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
-                if(prefs.getBoolean(mContext.getString(R.string.caller_id), false)) {
+                if(mContext.getBoolean(mContext.getString(R.string.caller_id), false)) {
                     String callerName = mPUtils.getContactDisplayNameByNumber(incomingNumber);
                     if(!callerName.isEmpty()){
                         mTTS.speak(callerName);
@@ -56,11 +56,10 @@ public class CallListener extends PhoneStateListener {
                 mTTS.stop();
                 //send busy message
                 //TODO: should put this in a separate class, but it's too simple
-                SharedPreferences prefs = mContext.getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
-                if (prefs.getBoolean(mContext.getString(R.string.busy_message), false)) {
+                if (mContext.getBoolean(mContext.getString(R.string.busy_message), false)) {
                     SmsManager smsManager = SmsManager.getDefault();
 
-                    String message = prefs.getString(DataUtils.busyMessageKey, mContext.getString(R.string.default_busy_message));
+                    String message = mContext.getString(DataUtils.busyMessageKey, mContext.getString(R.string.default_busy_message));
 
                     ArrayList<String> messages = smsManager.divideMessage(message);
                     try {

@@ -1,6 +1,7 @@
 package com.alexandruc.drivingassistant.core.tts;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class TTSController extends UtteranceProgressListener implements TextToSpeech.OnInitListener {
-    private final Activity mContext;
+    private final Service mContext;
     private TextToSpeech mTTS = null;
     private String mCurrentSpeakStr = null;
 
@@ -26,38 +27,11 @@ public class TTSController extends UtteranceProgressListener implements TextToSp
     private TTSStates mTTSState = TTSStates.STOPPED;
 
 
-    public TTSController(Activity context)
+    public TTSController(Service context)
     {
         this.mContext = context;
-    }
-
-    public void checkTTSDataAvailabilityRequest(){
-        Intent checkTTSIntent = new Intent();
-        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        mContext.startActivityForResult(checkTTSIntent, DataUtils.TTS_DATA_CHECK_ID);
-    }
-
-    /**
-     * Will be called to handle request for tts data
-     * @param requestCode upstream onActivityResult parameter
-     * @param resultCode upstream onActivityResult parameter
-     * @return true for TTS data available and TTS initialization OK, false otherwise
-     */
-    public boolean checkTTSDataAvailabilityRequestResult(int requestCode, int resultCode){
-        boolean retVal = false;
-        if (requestCode == DataUtils.TTS_DATA_CHECK_ID) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                mTTS = new TextToSpeech(mContext, this);
-                retVal = true;
-            }
-        }
-        return retVal;
-    }
-
-    public void requestTTSDataInstallation(){
-        Intent installTTSIntent = new Intent();
-        installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-        mContext.startActivity(installTTSIntent);
+        //at this point tts should be enabled
+        mTTS = new TextToSpeech(mContext, this);
     }
 
     public boolean isInitialized(){

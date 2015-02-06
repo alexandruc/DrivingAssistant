@@ -2,10 +2,10 @@ package com.alexandruc.drivingassistant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,17 +13,13 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.Toast;
 
+import com.alexandruc.drivingassistant.Utils.DataUtils;
 import com.alexandruc.drivingassistant.bl.ToggleButtonListAdapter;
-import com.alexandruc.drivingassistant.core.phone.CallListener;
 import com.alexandruc.drivingassistant.core.service.LocalService;
-import com.alexandruc.drivingassistant.core.tts.TTSController;
-
 
 public class MainActivity extends ActionBarActivity {
-    private TTSController mTTSController = new TTSController(this);
-    private CallListener mCallListener = new CallListener(this,mTTSController);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,27 +40,26 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         });
-
-        //listen to calls
-        TelephonyManager manager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        manager.listen(mCallListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-        //enable TTS
-        mTTSController.checkTTSDataAvailabilityRequest();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mTTSController.shutdown();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(!mTTSController.checkTTSDataAvailabilityRequestResult(requestCode, resultCode))
-        {
-            mTTSController.requestTTSDataInstallation();
+
+        if (requestCode == DataUtils.TTS_DATA_CHECK_ID) {
+            if (resultCode != TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                Intent installTTSIntent = new Intent();
+                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installTTSIntent);
+            }
+            else{
+                startLocalService();
+            }
         }
     }
 
@@ -82,8 +77,15 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Intent intent = new Intent(getBaseContext(), LocalService.class);
-                    startService(intent);
+                    SharedPreferences prefs = getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
+                    if(prefs.getBoolean(getString(R.string.caller_id),false)) {
+                        Intent checkTTSIntent = new Intent();
+                        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+                        startActivityForResult(checkTTSIntent, DataUtils.TTS_DATA_CHECK_ID);
+                    }
+                    else {
+                        startLocalService();
+                    }
                 }
                 else{
                     Intent intent = new Intent(getBaseContext(), LocalService.class);
@@ -93,5 +95,17 @@ public class MainActivity extends ActionBarActivity {
         });
 
         return true;
+    }
+
+    private void startLocalService(){
+        SharedPreferences prefs = getSharedPreferences(DataUtils.sharedPrefsName, Context.MODE_PRIVATE);
+        Intent intent = new Intent(getBaseContext(), LocalService.class);
+
+        intent.putExtra(getString(R.string.caller_id), prefs.getBoolean(getString(R.string.caller_id), false));
+        intent.putExtra(getString(R.string.busy_message), prefs.getBoolean(getString(R.string.busy_message), false));
+        intent.putExtra(getString(R.string.whitelist), prefs.getBoolean(getString(R.string.whitelist), false));
+        intent.putExtra(getString(R.string.blacklist), prefs.getBoolean(getString(R.string.blacklist), false));
+        intent.putExtra(DataUtils.busyMessageKey, prefs.getString(DataUtils.busyMessageKey, getString(R.string.default_busy_message)));
+        startService(intent);
     }
 }
