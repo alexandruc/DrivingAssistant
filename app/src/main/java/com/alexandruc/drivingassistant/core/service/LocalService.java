@@ -91,7 +91,7 @@ public class LocalService extends Service {
         Notification notification = new Notification.Builder(getBaseContext())
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Handling calls")
-                .setSmallIcon(R.drawable.drive_assistant_white) //TODO: create 24x24 icon for drive_assistant_white - http://stackoverflow.com/questions/18857437/notification-icon-gets-cropped
+                .setSmallIcon(R.drawable.drive_assistant_notification)
                 .setLargeIcon(bm)
                 .setContentIntent(contentIntent)
                 .build();
