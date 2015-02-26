@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -83,11 +85,14 @@ public class LocalService extends Service {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
 
+        //bitmap conversion for the large icon
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.drive_assistant_white);
+
         Notification notification = new Notification.Builder(getBaseContext())
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Handling calls")
-                .setSmallIcon(R.drawable.drive_assistant_white)
-                //.setLargeIcon(R.drawable.drive_assistant_white)
+                .setSmallIcon(R.drawable.drive_assistant_white) //TODO: create 24x24 icon for drive_assistant_white - http://stackoverflow.com/questions/18857437/notification-icon-gets-cropped
+                .setLargeIcon(bm)
                 .setContentIntent(contentIntent)
                 .build();
 
